@@ -1,0 +1,33 @@
+
+spring:
+  application:
+    name: register-center
+server:
+  port: 8761
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+    register-with-eureka: false  #是否注册到eureka
+    fetch-registry: false  #是否获取注册表
+    registry-fetch-interval-seconds: 5  #注册表获取时间间隔
+  instance:
+    lease-expiration-duration-in-seconds: 15 #eureka server等待下一次心跳的超时时间
+    lease-renewal-interval-in-seconds: 5 #eureka client发送心跳给服务端的频率
+    prefer-ip-address: true #是否获取第一个非回环ip地址
+    instance-id: ${spring.application.name}:${server.port} #实例id
+  server:
+    enable-self-preservation: true #是否开启自我保护机制
+    eviction-interval-timer-in-ms: 3000 #清理时间间隔
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #访问/actuator就会暴露出所有接口
+  endpoint:
+    health:
+      show-details: always #显示健康细节
+logging:
+  level:
+    root: info
+  file: logs/${spring.application.name}.log
